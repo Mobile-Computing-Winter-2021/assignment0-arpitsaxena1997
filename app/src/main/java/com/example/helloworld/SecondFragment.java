@@ -58,8 +58,10 @@ public class SecondFragment extends Fragment {
             connected = true;
             if (wifi != null) {
                 netType.setText("Connected via Wifi");
+                Toast.makeText(getActivity(), "Network is connected with Wi-fi", Toast.LENGTH_SHORT).show();
             } else {
                 netType.setText("Connected via Wifi");
+                Toast.makeText(getActivity(), "Network is connected with Mobile Data", Toast.LENGTH_SHORT).show();
             }
         } else {
             //Toast.makeText(this, "Network is not Conneted", Toast.LENGTH_SHORT).show();
@@ -75,7 +77,22 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(), "Stopped playing downloaded song", Toast.LENGTH_SHORT).show();
-                getActivity().stopService(new Intent(getActivity(), DownloadMusicPlay.class));
+                String tempFile = Environment.getExternalStorageDirectory() + "/arpit/MC.mp3";
+                File file = new File(tempFile);
+
+                TextView stat = (TextView) v.findViewById(R.id.songNotPresent);
+
+                if (file.exists()){
+                    getActivity().stopService(new Intent(getActivity(), DownloadMusicPlay.class));
+                    stat.setText("Downloaded song Stopped");
+                    Toast.makeText(getActivity(), "Stopped playing the downloaded song", Toast.LENGTH_SHORT).show();
+                }
+
+                else {
+                    stat.setText("Song not Present, Download the song, then play it and then stop it");
+                    Toast.makeText(getActivity(), "Song not Present, Download the song, then play it and then stop it", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -84,7 +101,21 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(), "Started Playing Downloaded Song", Toast.LENGTH_SHORT).show();
-                getActivity().startService(new Intent(getActivity(), DownloadMusicPlay.class));
+                String tempFile = Environment.getExternalStorageDirectory() + "/arpit/MC.mp3";
+                File file = new File(tempFile);
+
+                TextView stat = (TextView) v.findViewById(R.id.songNotPresent);
+
+                if (file.exists()){
+                    getActivity().startService(new Intent(getActivity(), DownloadMusicPlay.class));
+
+                    stat.setText("Playing Downloaded Song");
+                    Toast.makeText(getActivity(), "Playing Downloaded Song", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    stat.setText("Song not Present, Download the song, then play it");
+                    Toast.makeText(getActivity(), "Song not Present, Download the song, then play it", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -157,7 +188,6 @@ public class SecondFragment extends Fragment {
             return null;
 
         }
-
 
     }
 }

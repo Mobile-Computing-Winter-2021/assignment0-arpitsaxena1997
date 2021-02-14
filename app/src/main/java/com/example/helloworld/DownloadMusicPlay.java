@@ -37,32 +37,26 @@ public class DownloadMusicPlay extends Service
    String tempFile = Environment.getExternalStorageDirectory() + "/arpit/MC.mp3";
    File file = new File(tempFile);
 
-   if (file.exists()){
+  Uri uri = Uri.fromFile(file);
 
-    Uri uri = Uri.fromFile(file);
-
-    myPlayer = MediaPlayer.create(getApplicationContext(), uri);
-    Toast.makeText(getApplicationContext(), "Playing Downloaded Song", Toast.LENGTH_SHORT).show();
-  }
-
-  else{
-   Toast.makeText(getApplicationContext(), "Song not Present, Download the song", Toast.LENGTH_SHORT).show();
-  }
+  myPlayer = MediaPlayer.create(getApplicationContext(), uri);
  }
- 
+
  @Override
  public void onStart(Intent intent, int flags)
  {
   myPlayer.start();
-
  }
  
  @Override
  public void onDestroy()
  {
   myPlayer.stop();
-  Toast.makeText(getApplicationContext(), "Stopped Playing Downloaded Song", Toast.LENGTH_SHORT).show();
+  //Toast.makeText(getApplicationContext(), "Stopped Playing Downloaded Song", Toast.LENGTH_SHORT).show();
  }
+
 }
+
+
 
 
