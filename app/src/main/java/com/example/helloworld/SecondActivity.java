@@ -30,18 +30,18 @@ import java.net.URL;
 public class SecondActivity extends android.app.Activity
 {
  Button buttonDownloadSong, buttonPlayDownload, buttonStopDownload;
- 
+
  @Override
  protected void onCreate(Bundle savedInstanceState)
  {
   super.onCreate(savedInstanceState);
   setContentView(R.layout.activity_second);
-  
-  
+
+
   buttonDownloadSong = findViewById(R.id.buttonDownloadSong);
   buttonPlayDownload = findViewById(R.id.buttonPlayDownload);
   buttonStopDownload = findViewById(R.id.buttonStopDownload);
-  
+
   buttonStopDownload.setOnClickListener(new View.OnClickListener()
   {
    @Override
@@ -51,8 +51,8 @@ public class SecondActivity extends android.app.Activity
     stopService(new Intent(getApplicationContext(), DownloadMusicPlay.class));
    }
   });
-  
-  
+
+
   buttonPlayDownload.setOnClickListener(new View.OnClickListener()
   {
    @Override
@@ -62,8 +62,8 @@ public class SecondActivity extends android.app.Activity
     startService(new Intent(getApplicationContext(), DownloadMusicPlay.class));
    }
   });
-  
-  
+
+
   buttonDownloadSong.setOnClickListener(new View.OnClickListener()
   {
 
@@ -81,17 +81,17 @@ public class SecondActivity extends android.app.Activity
 
   boolean connected = connectionStatus();
   TextView stat = (TextView) findViewById(R.id.stat);
-  
+
  }
- 
+
  protected boolean connectionStatus()
  {
   TextView stat = (TextView) findViewById(R.id.network);
   ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-  
+
   //NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
   //NetworkInfo mob = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-  
+
   NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
   if(activeNetwork != null && activeNetwork.isConnectedOrConnecting())
   {
@@ -105,11 +105,11 @@ public class SecondActivity extends android.app.Activity
    return false;
   }
  }
- 
- 
+
+
  private class DownloadSongTask extends AsyncTask<String, Void, String>
  {
-  
+
   private void checkDirectory(File f)
   {
    if(!f.exists())
@@ -117,7 +117,7 @@ public class SecondActivity extends android.app.Activity
     f.mkdir();
    }
   }
-  
+
   private void checkFile(File f) throws IOException
   {
    if(!f.exists())
@@ -125,7 +125,7 @@ public class SecondActivity extends android.app.Activity
     f.createNewFile();
    }
   }
-  
+
   @Override
   protected String doInBackground(String... urls)
   {
@@ -136,23 +136,23 @@ public class SecondActivity extends android.app.Activity
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     conn.setRequestMethod("GET");
     conn.connect();
-    
+
     //int response = conn.getResponseCode(); Log.d("Http", "The response is: " + response);
     InputStream is = conn.getInputStream();
     String tempFile = Environment.getExternalStorageDirectory() + "/arpit";
     File dir = new File(tempFile);
     checkDirectory(dir);
-    
+
     File f = new File(dir, "MC.mp3");
     checkFile(f);
-    
+
     //getDir("file", Context.MODE_PRIVATE).getAbsolutePath() + "/rm_song.mp3";
     FileOutputStream fileOutputStream = new FileOutputStream(f);
     byte[] buffer = new byte[1024];
     int len = 0;
     for(len = 0; (len = is.read(buffer)) != -1; fileOutputStream.write(buffer))
     {
-    
+
     }
     TextView result = (TextView) findViewById(R.id.result);
     result.setText("Downloading Finished");
@@ -162,11 +162,11 @@ public class SecondActivity extends android.app.Activity
     e.printStackTrace();
    }
    return null;
-   
+
   }
-  
+
  }
 
 
- 
+
 }
