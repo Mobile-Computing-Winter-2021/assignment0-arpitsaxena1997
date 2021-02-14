@@ -11,12 +11,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,10 +31,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-
-public class SecondActivity extends android.app.Activity
+public class SecondActivity extends FragmentActivity
 {
- Button buttonDownloadSong, buttonPlayDownload, buttonStopDownload;
+ public final String TAG="Fragment";
 
  @Override
  protected void onCreate(Bundle savedInstanceState)
@@ -37,77 +41,20 @@ public class SecondActivity extends android.app.Activity
   super.onCreate(savedInstanceState);
   setContentView(R.layout.activity_second);
 
-
-  buttonDownloadSong = findViewById(R.id.buttonDownloadSong);
-  buttonPlayDownload = findViewById(R.id.buttonPlayDownload);
-  buttonStopDownload = findViewById(R.id.buttonStopDownload);
-
-  buttonStopDownload.setOnClickListener(new View.OnClickListener()
-  {
-   @Override
-   public void onClick(View view)
-   {
-    Toast.makeText(getApplicationContext(), "Stopped playing downloaded song", Toast.LENGTH_SHORT).show();
-    stopService(new Intent(getApplicationContext(), DownloadMusicPlay.class));
-   }
-  });
-
-
-  buttonPlayDownload.setOnClickListener(new View.OnClickListener()
-  {
-   @Override
-   public void onClick(View view)
-   {
-    Toast.makeText(getApplicationContext(), "Started Playing Downloaded Song", Toast.LENGTH_SHORT).show();
-    startService(new Intent(getApplicationContext(), DownloadMusicPlay.class));
-   }
-  });
-
-
-  buttonDownloadSong.setOnClickListener(new View.OnClickListener()
-  {
-
-   @Override
-   public void onClick(View view)
-   {
-    TextView stat = (TextView) findViewById(R.id.stat);
-
-    stat.setText("Downloading Started");
-    Toast.makeText(getApplicationContext(), "Downloading Started", Toast.LENGTH_SHORT).show();
-    new DownloadSongTask().execute();
-
-   }
-  });
-
-  boolean connected = connectionStatus();
-  TextView stat = (TextView) findViewById(R.id.stat);
-
- }
-
- protected boolean connectionStatus()
- {
-  TextView stat = (TextView) findViewById(R.id.network);
-  ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-  //NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-  //NetworkInfo mob = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-  NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-  if(activeNetwork != null && activeNetwork.isConnectedOrConnecting())
-  {
-   Toast.makeText(this, "Netowk is connected", Toast.LENGTH_SHORT).show();
-   stat.setText("Network is Connected");
-   return true;
-  }else
-  {
-   Toast.makeText(this, "Network is not Conneted", Toast.LENGTH_SHORT).show();
-   stat.setText("Network is not Connected");
-   return false;
+  FragmentManager fm = getSupportFragmentManager();
+  Fragment frag = fm.findFragmentById(R.id.fragment_activity2);
+  if(frag==null){
+   Log.i(TAG,"fragment is  null");
+   frag = new SecondFragment();
+   fm.beginTransaction()
+           .add(R.id.fragment_activity2,frag)
+           .commit();
   }
+  Log.i(TAG,"after inflating");
+
  }
 
-
- private class DownloadSongTask extends AsyncTask<String, Void, String>
+/* protected class DownloadSongTask extends AsyncTask<String, Void, String>
  {
 
   private void checkDirectory(File f)
@@ -165,8 +112,7 @@ public class SecondActivity extends android.app.Activity
 
   }
 
- }
-
+ }*/
 
 
 }

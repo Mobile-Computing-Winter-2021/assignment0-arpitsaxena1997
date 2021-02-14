@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,7 +22,7 @@ public class DownloadMusicPlay extends Service
  {
   return null;
  }
- 
+
  
  public DownloadMusicPlay()
  {
@@ -33,24 +34,34 @@ public class DownloadMusicPlay extends Service
  @Override
  public void onCreate()
  {
-  String tempFile = Environment.getExternalStorageDirectory() + "/arpit/MC.mp3";
-  
-  Uri uri = Uri.fromFile(new File(tempFile));
-  
-  myPlayer = MediaPlayer.create(getApplicationContext(), uri);
+   String tempFile = Environment.getExternalStorageDirectory() + "/arpit/MC.mp3";
+   File file = new File(tempFile);
+
+   if (file.exists()){
+
+    Uri uri = Uri.fromFile(file);
+
+    myPlayer = MediaPlayer.create(getApplicationContext(), uri);
+    Toast.makeText(getApplicationContext(), "Playing Downloaded Song", Toast.LENGTH_SHORT).show();
+  }
+
+  else{
+   Toast.makeText(getApplicationContext(), "Song not Present, Download the song", Toast.LENGTH_SHORT).show();
+  }
  }
  
  @Override
  public void onStart(Intent intent, int flags)
  {
   myPlayer.start();
-  //Toast.makeText(getApplicationContext(), "Stop in music", Toast.LENGTH_SHORT).show();
+
  }
  
  @Override
  public void onDestroy()
  {
   myPlayer.stop();
+  Toast.makeText(getApplicationContext(), "Stopped Playing Downloaded Song", Toast.LENGTH_SHORT).show();
  }
 }
 

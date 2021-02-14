@@ -33,6 +33,9 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="match_parent"
@@ -72,6 +75,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Stop Download Song" />
+
+        <TextView
+            android:id="@+id/songNotPresent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
