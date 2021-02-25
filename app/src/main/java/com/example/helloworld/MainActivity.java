@@ -16,27 +16,38 @@ import androidx.fragment.app.FragmentManager;
 public class MainActivity extends AppCompatActivity {
     public final String TAG="Fragment";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        registerReceiver(new ChargerReceiver(), new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
-        registerReceiver(new ChargerReceiver(), new IntentFilter(Intent.ACTION_POWER_CONNECTED));
-        registerReceiver(new ChargerReceiver(), new IntentFilter(Intent.ACTION_BATTERY_LOW));
-        registerReceiver(new ChargerReceiver(), new IntentFilter(Intent.ACTION_BATTERY_OKAY));
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment frag = fm.findFragmentById(R.id.fragment_container);
+        Fragment fragment = new ItemFragment();
+        fm.beginTransaction().replace(R.id.fragment_container_list, fragment).commit();
+
+
+/*
+
+        Fragment frag = fm.findFragmentById(R.id.fragment_container_list);
         if(frag==null){
             Log.i(TAG,"fragment is  null");
-            frag = new BlankFragment();
+            frag = new ItemFragment();
             fm.beginTransaction()
-                    .add(R.id.fragment_container,frag)
+                    .add(R.id.fragment_container_list,frag)
                     .commit();
-        }
+*/
         Log.i(TAG,"after inflating");
+        }
 
     }
 
-}
+   /* @Override
+    public void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+
+    }*/
+

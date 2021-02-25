@@ -33,7 +33,7 @@ import java.net.URL;
 
 public class SecondActivity extends FragmentActivity
 {
- public final String TAG="Fragment";
+ public final String TAG="Fragment Second Activity";
 
  @Override
  protected void onCreate(Bundle savedInstanceState)
@@ -52,67 +52,7 @@ public class SecondActivity extends FragmentActivity
   }
   Log.i(TAG,"after inflating");
 
+
  }
-
-/* protected class DownloadSongTask extends AsyncTask<String, Void, String>
- {
-
-  private void checkDirectory(File f)
-  {
-   if(!f.exists())
-   {
-    f.mkdir();
-   }
-  }
-
-  private void checkFile(File f) throws IOException
-  {
-   if(!f.exists())
-   {
-    f.createNewFile();
-   }
-  }
-
-  @Override
-  protected String doInBackground(String... urls)
-  {
-   try
-   {
-    String myURL = "https://faculty.iiitd.ac.in/~mukulika/s1.mp3";
-    URL url = new URL(myURL);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setRequestMethod("GET");
-    conn.connect();
-
-    //int response = conn.getResponseCode(); Log.d("Http", "The response is: " + response);
-    InputStream is = conn.getInputStream();
-    String tempFile = Environment.getExternalStorageDirectory() + "/arpit";
-    File dir = new File(tempFile);
-    checkDirectory(dir);
-
-    File f = new File(dir, "MC.mp3");
-    checkFile(f);
-
-    //getDir("file", Context.MODE_PRIVATE).getAbsolutePath() + "/rm_song.mp3";
-    FileOutputStream fileOutputStream = new FileOutputStream(f);
-    byte[] buffer = new byte[1024];
-    int len = 0;
-    for(len = 0; (len = is.read(buffer)) != -1; fileOutputStream.write(buffer))
-    {
-
-    }
-    TextView result = (TextView) findViewById(R.id.result);
-    result.setText("Downloading Finished");
-    Toast.makeText(getApplicationContext(), "Downloading Completed", Toast.LENGTH_SHORT).show();
-   }catch(Exception e)
-   {
-    e.printStackTrace();
-   }
-   return null;
-
-  }
-
- }*/
-
 
 }
