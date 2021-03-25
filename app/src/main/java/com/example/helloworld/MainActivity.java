@@ -270,14 +270,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 67);
                     }
 
-                    Log.d("switch", "before");
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.this);
-                    Log.d("switch", "after");
                     Toast.makeText(getApplicationContext(), "Started Saving Data of GPS Data", Toast.LENGTH_SHORT).show();
                 }
 
                 else {
-                    sensorManager.unregisterListener(MainActivity.this);
+                    //sensorManager.unregisterListener(MainActivity.this);
                     Toast.makeText(getApplicationContext(), "Stopped Saving Data of GPS Data", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -380,9 +378,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         AppDatabase dbGPS = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database_gps").allowMainThreadQueries().build();
         DataGPS dataGPS = new DataGPS(location.getLatitude(), location.getLongitude());
         dbGPS.userDao().insert_gps(dataGPS);
-        Log.d("change", "before");
-        outputAll.setText("Output of GPS Sensor\nTimestamp: "+"\n"+"\nLattitude: "+location.getLatitude()+"\nLongitude: "+ location.getLongitude());
-        Log.d("change", "after");
+        //outputAll.setText("Output of GPS Sensor\nTimestamp: "+"\n"+"\nLattitude: "+location.getLatitude()+"\nLongitude: "+ location.getLongitude());
     }
 }
 
