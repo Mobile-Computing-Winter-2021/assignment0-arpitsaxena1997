@@ -1,6 +1,7 @@
 package com.example.helloworld;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     //Sensors
     private SensorManager sensorManager;
-    private LocationManager locationManager;
+    public LocationManager locationManager;
     private Sensor acc;
     private Sensor linAcc;
     private Sensor temp;
@@ -97,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         avgAcc = findViewById(R.id.outputAcc);
         outputHeading = findViewById(R.id.outputSensor3);
 
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         // For MotionDetection
         mAccel = 0.00f;
@@ -261,21 +262,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
+
                     outputHeading.setVisibility(View.VISIBLE);
                     //public LocationListener locationListener = new LocationListener();
 
                     if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 67);
                     }
+
                     Log.d("switch", "before");
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, MainActivity.this);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.this);
                     Log.d("switch", "after");
                     Toast.makeText(getApplicationContext(), "Started Saving Data of GPS Data", Toast.LENGTH_SHORT).show();
                 }
@@ -382,10 +378,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onLocationChanged(@NonNull Location location) {
 
         AppDatabase dbGPS = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database_gps").allowMainThreadQueries().build();
-        DataGPS dataGPS = new DataGPS(location.getTime(), location.getLatitude(), location.getLongitude());
+        DataGPS dataGPS = new DataGPS(location.getLatitude(), location.getLongitude());
         dbGPS.userDao().insert_gps(dataGPS);
         Log.d("change", "before");
-        outputAll.setText("Output of GPS Sensor\nTimestamp: "+location.getTime()+"\n"+"\nLattitude: "+location.getLatitude()+"\nLongitude: "+ location.getLongitude());
+        outputAll.setText("Output of GPS Sensor\nTimestamp: "+"\n"+"\nLattitude: "+location.getLatitude()+"\nLongitude: "+ location.getLongitude());
         Log.d("change", "after");
     }
 }
