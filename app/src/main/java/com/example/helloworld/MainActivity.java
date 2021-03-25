@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
 
                 else {
+                    sensorManager.unregisterListener(MainActivity.this);
                     Toast.makeText(getApplicationContext(), "Stopped Saving Data of Gyroscope Data", Toast.LENGTH_SHORT).show();
                 }
             }
