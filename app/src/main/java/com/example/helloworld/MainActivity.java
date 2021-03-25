@@ -187,10 +187,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if (motion) {
                     motion = false;
                     Toast.makeText(getApplicationContext(), "Motion Detection Disabled", Toast.LENGTH_SHORT).show();
+                    motionStatus.setText("Motion Status Disabled");
                 }
                 else {
                     motion = true;
                     Toast.makeText(getApplicationContext(), "Motion Detection Enabled", Toast.LENGTH_SHORT).show();
+                    motionStatus.setText("Motion Status Enabled");
                 }
 
             }
@@ -258,25 +260,56 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-        switchGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*switchGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
 
-                    outputHeading.setVisibility(View.VISIBLE);
+                    //outputHeading.setVisibility(View.VISIBLE);
                     //public LocationListener locationListener = new LocationListener();
 
                     if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 67);
                     }
 
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.this);
-                    Toast.makeText(getApplicationContext(), "Started Saving Data of GPS Data", Toast.LENGTH_SHORT).show();
+                    Log.d("switch", "before");
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, MainActivity.this);
+                    Log.d("switch", "after");
+                    //Toast.makeText(getApplicationContext(), "Started Saving Data of GPS Data", Toast.LENGTH_SHORT).show();
                 }
 
                 else {
                     //sensorManager.unregisterListener(MainActivity.this);
                     Toast.makeText(getApplicationContext(), "Stopped Saving Data of GPS Data", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });*/
+
+        switchGPS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (switchGPS.isChecked()) {
+                    outputHeading.setVisibility(View.VISIBLE);
+                    outputAll.setText("Fetching GPS Coordinates");
+                    Boolean gpsenabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                    if (gpsenabled) {
+
+                        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},90);
+                            return;
+                        }
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, MainActivity.this);
+
+                    }
+                    else
+                    {
+                        Toast.makeText(MainActivity.this,"Gps Not Enabled",Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+                else
+                {
+                    locationManager.removeUpdates(MainActivity.this);
                 }
             }
         });
@@ -378,7 +411,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         AppDatabase dbGPS = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database_gps").allowMainThreadQueries().build();
         DataGPS dataGPS = new DataGPS(location.getLatitude(), location.getLongitude());
         dbGPS.userDao().insert_gps(dataGPS);
-        //outputAll.setText("Output of GPS Sensor\nTimestamp: "+"\n"+"\nLattitude: "+location.getLatitude()+"\nLongitude: "+ location.getLongitude());
+        Log.d("change", "before");
+        outputAll.setText("Output of GPS Sensor\nTimestamp: "+"\n"+"\nLattitude: "+location.getLatitude()+"\nLongitude: "+ location.getLongitude());
+        Log.d("change", "after");
     }
 }
 
