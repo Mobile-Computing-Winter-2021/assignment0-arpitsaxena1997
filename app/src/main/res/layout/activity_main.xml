@@ -1,7 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_container_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    />
+    android:paddingLeft="20dp"
+    android:paddingEnd="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/outputSensor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/outputSensor3" />
+
+        <TextView
+            android:id="@+id/outputSensor3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Output of Last toggled Sensor"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchProximity" />
+
+        <TextView
+            android:id="@+id/Heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Toggle the switches to store data in database"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.022"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <Switch
+            android:id="@+id/switchAccelerometer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Accelerometer Sensor"
+            app:layout_constraintTop_toBottomOf="@+id/Heading"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <Switch
+            android:id="@+id/switchLinearAcceleration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Linear Acceleration Sensor"
+            app:layout_constraintTop_toBottomOf="@+id/switchAccelerometer"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <Switch
+            android:id="@+id/switchTemperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+
+            android:text="Gyroscope Sensor"
+            app:layout_constraintTop_toBottomOf="@+id/switchLinearAcceleration" />
+
+        <Switch
+            android:id="@+id/switchLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Light Sensor"
+            app:layout_constraintTop_toBottomOf="@+id/switchTemperature" />
+
+
+        <Switch
+            android:id="@+id/switchGPS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="GPS Sensor"
+            app:layout_constraintTop_toBottomOf="@+id/switchLight"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <Switch
+            android:id="@+id/switchProximity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Proximity Sensor"
+            app:layout_constraintTop_toBottomOf="@+id/switchGPS" />
+
+        <Button
+            android:id="@+id/buttonAvgAcc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Get Average Accelerometer Sensor Reading"
+            app:layout_constraintTop_toBottomOf="@+id/buttonMotion"
+            tools:layout_editor_absoluteX="4dp" />
+
+        <Button
+            android:id="@+id/buttonAvgTemp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get Average Temperature Sensor Reading"
+            app:layout_constraintTop_toBottomOf="@+id/outputAcc"
+            tools:layout_editor_absoluteX="12dp" />
+
+        <Button
+            android:id="@+id/buttonMotion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Motion Status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/outputSensor" />
+
+        <TextView
+            android:id="@+id/outputTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Output Temperature Sensor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.048"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonAvgTemp" />
+
+        <TextView
+            android:id="@+id/outputAcc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Output Accelerometer Sensor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.048"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonAvgAcc" />
+
+        <TextView
+            android:id="@+id/motionStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Motion Status"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.318"
+            app:layout_constraintStart_toEndOf="@+id/buttonMotion"
+            app:layout_constraintTop_toBottomOf="@+id/outputSensor" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
 

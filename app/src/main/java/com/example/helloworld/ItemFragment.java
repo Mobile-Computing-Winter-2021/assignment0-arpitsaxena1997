@@ -36,14 +36,6 @@ public class ItemFragment extends Fragment {
         globalView = view;
         studList = StudentData.get().getStudList();
 
-        /*// Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(studList));*/
-
         // Set the adapter
 
         Context context = view.getContext();

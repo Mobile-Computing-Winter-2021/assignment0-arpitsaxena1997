@@ -59,7 +59,7 @@ public class SecondFragment extends Fragment {
         trollNo.setText(rollNo);
         tdept.setText(dept);
         temail.setText(email);
-
+ 
 
         //buttonBack = (Button) v.findViewById(R.id.buttonBack);
         buttonEdit = (Button) v.findViewById(R.id.buttonEdit);
