@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +65,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     int entries_in_hour = 1000000 / 200000 * 60 * 60;
 
+    // For MotionDetection
+    private float[] mGravity;
+    private float mAccel;
+    private float mAccelCurrent;
+    private float mAccelLast;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +98,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // For MotionDetection
+        mAccel = 0.00f;
+        mAccelCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelLast = SensorManager.GRAVITY_EARTH;
 
         btnAvgAcc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,6 +308,25 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             dbAcc1.userDao().insert_acc(dataAcc);
             outputAll.setText("Output of Accelerometer Sensor\nTimestamp: "+sensorEvent.timestamp+"\n"+sensorEvent.values[0]+"\n"+sensorEvent.values[1]+"\n"+sensorEvent.values[2]);
            // outputAll.setText((int) ((new Date()).getTime() + (sensorEvent.timestamp - System.nanoTime())/ 1000000L));
+
+            //Motion Detection
+            mGravity = sensorEvent.values.clone();
+
+            float x = mGravity[0];
+            float y = mGravity[1];
+            float z = mGravity[2];
+
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt(x*x + y*y + z*z);
+            float delta = mAccelCurrent - mAccelLast;
+            mAccel = mAccel * 0.9f + delta;
+            if (mAccel > 1) {
+                motionStatus.setText("In Motion");
+            }
+            else {
+                motionStatus.setText("Stationary");
+            }
+
         }
 
         if (sensor.getType() == sensor.TYPE_LINEAR_ACCELERATION) {
