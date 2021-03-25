@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int entries_in_hour = 1000000 / 200000 * 60 * 60;
 
     // For MotionDetection
+    private boolean motion = false;
     private float[] mGravity;
     private float mAccel;
     private float mAccelCurrent;
@@ -182,8 +183,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         btnMotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database_linAcc").allowMainThreadQueries().build();
-
+                if (motion) {
+                    motion = false;
+                    Toast.makeText(getApplicationContext(), "Motion Detection Disabled", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    motion = true;
+                    Toast.makeText(getApplicationContext(), "Motion Detection Enabled", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -310,22 +317,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
            // outputAll.setText((int) ((new Date()).getTime() + (sensorEvent.timestamp - System.nanoTime())/ 1000000L));
 
             //Motion Detection
-            mGravity = sensorEvent.values.clone();
+            if (motion) {
+                mGravity = sensorEvent.values.clone();
 
-            float x = mGravity[0];
-            float y = mGravity[1];
-            float z = mGravity[2];
+                float x = mGravity[0];
+                float y = mGravity[1];
+                float z = mGravity[2];
 
-            mAccelLast = mAccelCurrent;
-            mAccelCurrent = (float) Math.sqrt(x*x + y*y + z*z);
-            float delta = mAccelCurrent - mAccelLast;
-            mAccel = mAccel * 0.9f + delta;
-            if (mAccel > 1) {
-                motionStatus.setText("In Motion");
+                mAccelLast = mAccelCurrent;
+                mAccelCurrent = (float) Math.sqrt(x*x + y*y + z*z);
+                float delta = mAccelCurrent - mAccelLast;
+                mAccel = mAccel * 0.9f + delta;
+                if (mAccel > 1) {
+                    motionStatus.setText("In Motion");
+                }
+                else {
+                    motionStatus.setText("Stationary");
+                }
+
             }
-            else {
-                motionStatus.setText("Stationary");
-            }
+
 
         }
 
