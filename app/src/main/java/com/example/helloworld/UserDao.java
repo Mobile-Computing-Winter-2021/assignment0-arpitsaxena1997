@@ -10,27 +10,16 @@ import java.util.List;
 @Dao
 public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert_acc(DataAcc dataAcc);
+    public void insert_acc(DataRoom dataRoom);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert_gps(DataGPS dataGPS);
+    public void insert_gps(DataWardrive dataWardrive);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert_gyro(DataGyro dataGyro);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert_light(DataLight dataLight);
+    @Query("Select * from table_room")
+    List<DataRoom> getAllRooms();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert_linAcc(DataLinAcc dataLinAcc);
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert_proximity(DataProximity dataProximity);
-
-    @Query("Select * from table_acc")
-    List<DataAcc> getAccData();
-
-    @Query("Select * from table_light")
-    List<DataLight> getLightData();
+    @Query("Select * from table_wardrive")
+    List<DataWardrive> getWardriveData();
 
 }
