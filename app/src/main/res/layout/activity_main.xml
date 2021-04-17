@@ -7,17 +7,70 @@
     android:orientation = "vertical"
     tools:context = ".MainActivity">
 
-    <Button
-        android:id = "@+id/btnScan"
-        android:layout_width = "match_parent"
-        android:layout_height = "50dp"
-        android:layout_alignParentTop = "true"
-        android:layout_gravity = "bottom"
-        android:text = "Scan WiFi" />
+    <LinearLayout
+        android:id="@+id/scanRow"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnScan"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Scan Wifi" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnWardrive"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Wardrive" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/firstRow"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/scanRow">
+
+        <Button
+            android:id="@+id/btnList"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="WiFi List" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnChart"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Wifi Chart" />
+
+    </LinearLayout>
+
+
     <ListView
+        android:visibility="visible"
         android:id = "@+id/wifiList"
         android:layout_width = "match_parent"
         android:layout_height = "wrap_content"
-        android:layout_below = "@+id/btnScan" />
+        android:layout_below = "@+id/firstRow" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/barChart"
+        android:layout_below="@+id/firstRow"/>
 
 </RelativeLayout>

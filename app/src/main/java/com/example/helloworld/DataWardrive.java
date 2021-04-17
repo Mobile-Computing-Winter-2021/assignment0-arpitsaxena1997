@@ -11,11 +11,15 @@ public class DataWardrive {
     @ColumnInfo(name = "rssiValue")
     public int data_rssi;
 
+    @ColumnInfo(name = "ssidValue")
+    public String data_ssid;
+
     @ColumnInfo(name = "roomLabel")
     public String data_roomLabel;
 
-    public DataWardrive(int data_rssi, String data_roomLabel) {
+    public DataWardrive(int data_rssi, String data_ssid, String data_roomLabel) {
         this.data_rssi = data_rssi;
+        this.data_ssid = data_ssid;
         this.data_roomLabel = data_roomLabel;
     }
 

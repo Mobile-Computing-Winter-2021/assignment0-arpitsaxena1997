@@ -10,10 +10,10 @@ import java.util.List;
 @Dao
 public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert_acc(DataRoom dataRoom);
+    public void insert_room(DataRoom dataRoom);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert_gps(DataWardrive dataWardrive);
+    public void insert_war(DataWardrive dataWardrive);
 
 
     @Query("Select * from table_room")
