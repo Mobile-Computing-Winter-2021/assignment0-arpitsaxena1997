@@ -55,6 +55,7 @@ public class SecondActivity extends AppCompatActivity {
         Button btnPredict = findViewById(R.id.btnPredict);
         //Button btnUpdate = findViewById(R.id.btnGetWifi);
         Button btnWarCont = findViewById(R.id.btnStartWar2);
+        Button btnImu = findViewById(R.id.btnImu);
         TextView result1 = (TextView) findViewById(R.id.result1);
         TextView result2 = (TextView) findViewById(R.id.result2);
 
@@ -106,6 +107,14 @@ public class SecondActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Started scanning and predicting", Toast.LENGTH_SHORT).show();
                 Log.d("PredictButton", "After startscan");
+            }
+        });
+
+        btnImu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentSecond = new Intent(SecondActivity.this, ThirdActivity.class);
+                startActivityForResult(intentSecond, 3);
             }
         });
     }

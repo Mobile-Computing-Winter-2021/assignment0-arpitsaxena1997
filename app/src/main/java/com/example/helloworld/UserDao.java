@@ -22,4 +22,30 @@ public interface UserDao {
     @Query("Select * from table_wardrive")
     List<DataWardrive> getWarData();
 
+    // IMU
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public void insert_acc(DataAcc dataAcc);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public void insert_gyro(DataGyro dataGyro);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public void insert_magnet(DataMagneto dataMagneto);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public void insert_step(DataStep dataStep);
+
+    @Query("Select * from table_acc")
+    List<DataAcc> getAccData();
+
+    @Query("Select * from table_gyro")
+    List<DataGyro> getGyroData();
+
+    @Query("Select * from table_mangnet")
+    List<DataMagneto> getMagnetData();
+
+    @Query("Select * from table_step")
+    List<DataStep> getStepData();
+
 }
