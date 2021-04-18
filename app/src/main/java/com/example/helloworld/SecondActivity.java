@@ -185,9 +185,9 @@ public class SecondActivity extends AppCompatActivity {
 
             for (DataWardrive dataWardrive : listWar) {
 
-                Log.d(TAG, "roomdta " + dataRoom.roomName + ", roomwar " + dataWardrive.data_roomLabel);
+               // Log.d(TAG, "roomdta " + dataRoom.roomName + ", roomwar " + dataWardrive.data_roomLabel);
                 if (dataRoom.roomName.equals(dataWardrive.data_roomLabel)) {
-                    Log.d(TAG, "roomwar " + dataWardrive.data_roomLabel);
+                    //Log.d(TAG, "roomwar " + dataWardrive.data_roomLabel);
 
 
                     for (ScanResult scan : currentList) {
@@ -195,7 +195,7 @@ public class SecondActivity extends AppCompatActivity {
                         if ((scan.SSID.equals("knowledge-Fi 5gh") || scan.SSID.equals("Knowledge-Fi")) && scan.SSID.equals(dataWardrive.data_ssid)) {
                             sum += distance(Math.abs(scan.level), Math.abs(dataWardrive.data_rssi));
                             repeat++;
-                            Log.d(TAG, "room " + dataWardrive.data_roomLabel + " level " + scan.level + " rssi " + dataWardrive.data_rssi + " sum " + sum);
+                            Log.d(TAG, "room: " + dataWardrive.data_roomLabel + ", level: " + scan.level + ", rssi: " + dataWardrive.data_rssi + ", sum: " + sum);
                         }
                     }
                 }
