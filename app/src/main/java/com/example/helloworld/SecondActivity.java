@@ -148,6 +148,7 @@ public class SecondActivity extends AppCompatActivity {
 
     public void predict(){
         TextView result2 = (TextView) findViewById(R.id.result2);
+        TextView result1 = (TextView) findViewById(R.id.result1);
         String TAG = "PredictButton";
         List<ScanResult> currentList = resultList;
         Log.d("PredictButton", "AfterList");
@@ -179,6 +180,7 @@ public class SecondActivity extends AppCompatActivity {
         //Log.d("PredictButton", "AfterSecondSort");
 
         List<ListData> temp = new ArrayList<>();
+        List<ListData> tempKnn = new ArrayList<>();
         for (DataRoom dataRoom : listRoom) {
             float sum = 0;
             int repeat = 0;
@@ -193,7 +195,9 @@ public class SecondActivity extends AppCompatActivity {
                     for (ScanResult scan : currentList) {
                         //Log.d(TAG, "ssid"+ scan.SSID + dataWardrive.data_ssid);
                         if ((scan.SSID.equals("knowledge-Fi 5gh") || scan.SSID.equals("Knowledge-Fi")) && scan.SSID.equals(dataWardrive.data_ssid)) {
-                            sum += distance(Math.abs(scan.level), Math.abs(dataWardrive.data_rssi));
+                            float dist = distance(Math.abs(scan.level), Math.abs(dataWardrive.data_rssi));
+                            sum += dist;
+                            tempKnn.add(new ListData(dataRoom.roomName, dist));
                             repeat++;
                             Log.d(TAG, "room: " + dataWardrive.data_roomLabel + ", level: " + scan.level + ", rssi: " + dataWardrive.data_rssi + ", sum: " + sum);
                         }
@@ -206,23 +210,22 @@ public class SecondActivity extends AppCompatActivity {
 
         }
 
-        Log.d("PredictButton", "Before 3d sort" + temp.size());
+        Log.d("PredictButton", "Before 3rd sort" + temp.size());
         Collections.sort(temp, new Comparator<ListData>() {
             @Override
             public int compare(ListData listData, ListData t1) {
-                //Log.d("PredictButton", "Before Retutn");
                 return Float.compare(listData.getValue(), t1.getValue());
-//                        Log.d("PredictButton", "After Return");
+//
             }
         });
 
         Log.d("PredictButton", "After 3rd sort");
         // Using k as 5 in knn
-        List<String> knnList = new ArrayList<>();
+        List<String> normalList = new ArrayList<>();
         int i = 0;
         for (ListData listData : temp) {
             if (i < 5) {
-                knnList.add(listData.label);
+                normalList.add(listData.label);
                 Log.d("PredictButton", listData.label+ ": " + listData.value);
                 i++;
             }
@@ -236,9 +239,37 @@ public class SecondActivity extends AppCompatActivity {
             Log.d("PredictionButton", "onClick: " + temp.size());
         }
 
-                /*result1.setText("Current Location finding Simply: " + knnList.get(0) );
-                Log.d("PredictButton", "After First Result");
-                Log.d("PredictButton", knnList.get(0));*/
+        //Normal Prediction
+        result1.setText("Current Location Normally: " + normalList.get(0) );
+        Log.d("PredictButton", "After First Result");
+
+
+
+        //knn prediction
+        Log.d("PredictButton", "Before 4th sort" + tempKnn.size());
+        Collections.sort(tempKnn, new Comparator<ListData>() {
+            @Override
+            public int compare(ListData listData, ListData t1) {
+                return Float.compare(listData.getValue(), t1.getValue());
+//
+            }
+        });
+
+        Log.d("PredictButton", "After 3rd sort");
+        // Using k as 5 in knn
+        List<String> knnList = new ArrayList<>();
+        i = 0;
+        for (ListData listData : tempKnn) {
+            if (i < 5) {
+                knnList.add(listData.label);
+                Log.d("PredictButton", "knnlist " + listData.label);
+                i++;
+            }
+            else {
+                break;
+            }
+        }
+
 
         int[] array1  = new int[5];
         int max = 0;
@@ -267,7 +298,7 @@ public class SecondActivity extends AppCompatActivity {
         Log.d("PredictButton", "before second result");
         //+knnList.get(max)
         //result1.setText("Processed");
-        result2.setText("Current location: " + knnList.get(max));
+        result2.setText("Current location using K-NN at k==5: " + knnList.get(max));
         Log.d("PredictButton", "After second result");
     }
 
