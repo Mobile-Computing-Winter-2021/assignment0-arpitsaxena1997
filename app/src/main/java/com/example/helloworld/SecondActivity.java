@@ -36,6 +36,7 @@ public class SecondActivity extends AppCompatActivity {
     List<ScanResult> resultList;
     WifiReceiver wifiReceiver;
 
+    boolean def = false;
     AppDatabase dbRoom;
     AppDatabase dbWar;
 
@@ -52,6 +53,7 @@ public class SecondActivity extends AppCompatActivity {
         Button btnWar = findViewById(R.id.btnStartWar);
         Button btnPredict = findViewById(R.id.btnPredict);
         Button btnUpdate = findViewById(R.id.btnGetWifi);
+        Button btnWarCont = findViewById(R.id.btnStartWar2);
         TextView result1 = (TextView) findViewById(R.id.result1);
         TextView result2 = (TextView) findViewById(R.id.result2);
 
@@ -62,34 +64,21 @@ public class SecondActivity extends AppCompatActivity {
         btnWar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String roomName = textRoom.getText().toString();
-                wifiManager.startScan();
+                warDrive();
+            }
+        });
 
-                List<DataRoom> listRoom = dbRoom.userDao().getAllRooms();
-                boolean flag = false;
-
-                if (roomName.equals("")){
-                    Toast.makeText(getApplicationContext(), "Enter Room Name. Don't keep it Empty", Toast.LENGTH_SHORT).show();
+        btnWarCont.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!def) {
+                    def = true;
+                    btnWarCont.setText("Stop saving War Drive Data Continously");
+                    warDrive();
                 }
                 else {
-                    for (DataRoom dataRoom : listRoom) {
-                        if (dataRoom.roomName.equals(roomName)) {
-                            flag = true;
-                            break;
-                        }
-                    }
-
-                    if (!flag) {
-                        dbRoom.userDao().insert_room(new DataRoom(roomName));
-                    }
-
-                    for (ScanResult scanResult : resultList) {
-                        //if (!scanResult.SSID.equals("")) {
-                        if (scanResult.SSID.equals("knowledge-Fi 5gh") || scanResult.SSID.equals("Knowledge-Fi")) {
-                            dbWar.userDao().insert_war(new DataWardrive(scanResult.level, scanResult.SSID, roomName));
-                        }
-                    }
-                    Toast.makeText(getApplicationContext(), "Scan Completed and Data added to Database", Toast.LENGTH_SHORT).show();
+                    def = false;
+                    btnWarCont.setText("Save War Drive Data Continously");
                 }
             }
         });
@@ -244,6 +233,42 @@ public class SecondActivity extends AppCompatActivity {
         });
     }
 
+    public  void warDrive() {
+        EditText textRoom = (EditText) findViewById(R.id.textRoom);
+        Button btnWarCont = findViewById(R.id.btnStartWar2);
+        String roomName = textRoom.getText().toString();
+        wifiManager.startScan();
+
+        List<DataRoom> listRoom = dbRoom.userDao().getAllRooms();
+        boolean flag = false;
+
+        if (roomName.equals("")){
+            Toast.makeText(getApplicationContext(), "Enter Room Name. Don't keep it Empty", Toast.LENGTH_SHORT).show();
+            def = false;
+            btnWarCont.setText("Save War Drive Data Continously");
+        }
+        else {
+            for (DataRoom dataRoom : listRoom) {
+                if (dataRoom.roomName.equals(roomName)) {
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (!flag) {
+                dbRoom.userDao().insert_room(new DataRoom(roomName));
+            }
+
+            for (ScanResult scanResult : resultList) {
+                //if (!scanResult.SSID.equals("")) {
+                if (scanResult.SSID.equals("knowledge-Fi 5gh") || scanResult.SSID.equals("Knowledge-Fi")) {
+                    dbWar.userDao().insert_war(new DataWardrive(scanResult.level, scanResult.SSID, roomName));
+                }
+            }
+            Toast.makeText(getApplicationContext(), "Scan Completed and Data added to Database", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public float distance(float x, float y) {
         float z = Math.abs(x - y);
         //Log.d("PredictButton", "Dist fun x" + x + "y" + y + "z" + z);
@@ -253,6 +278,9 @@ public class SecondActivity extends AppCompatActivity {
     public void trigger() {
         TextView result1 = (TextView) findViewById(R.id.result1);
         result1.setText("Scan Done. Wifi List Updated. Ready to Predict");
+        if (def) {
+            warDrive();
+        }
     }
 
     @Override
