@@ -32,7 +32,18 @@
         android:id="@+id/btnStartWar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save War Drive Data"
+        android:text="Save War Drive Data Once"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <Button
+        android:id="@+id/btnStartWar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save War Drive Data Once"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,10 +57,20 @@
         android:text="Predict Location"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGetWifi"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <Button
+        android:id="@+id/btnGetWifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Wifi List"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnStartWar"
-        app:layout_constraintVertical_bias="0.082" />
+        app:layout_constraintVertical_bias="0.008" />
 
     <TextView
         android:id="@+id/result1"
@@ -57,10 +78,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toEndOf="@+id/btnPredict"
-        app:layout_constraintTop_toBottomOf="@+id/btnStartWar"
-        app:layout_constraintVertical_bias="0.098" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPredict"
+        app:layout_constraintVertical_bias="0.052" />
 
     <TextView
         android:id="@+id/result2"
@@ -68,9 +88,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toEndOf="@+id/btnPredict"
-        app:layout_constraintTop_toBottomOf="@+id/btnStartWar"
-        app:layout_constraintVertical_bias="0.201" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/result1"
+        app:layout_constraintVertical_bias="0.045" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

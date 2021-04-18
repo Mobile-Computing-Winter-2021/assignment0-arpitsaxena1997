@@ -16,13 +16,13 @@ public class DataRoom {
         this.roomName = roomName;
     }
 
-    public int getId_room() {
+    /*public int getId_room() {
         return id_room;
     }
 
     public void setId_room(int id_room) {
         this.id_room = id_room;
-    }
+    }*/
 
     public String getRoomName() {
         return roomName;

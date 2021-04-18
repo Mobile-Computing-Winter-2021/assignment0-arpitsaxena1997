@@ -25,6 +25,8 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -136,10 +138,17 @@ public class MainActivity extends AppCompatActivity {
 
             barEntries = new ArrayList<>();
             labelEntries = new ArrayList<String>();
-            float i = 1f;
+            float i = 0f;
+
+            Collections.sort(resultList, new Comparator<ScanResult>() {
+                @Override
+                public int compare(ScanResult dataWardrive, ScanResult t1) {
+                    return t1.SSID.compareTo(dataWardrive.SSID);
+                }
+            });
 
             for(ScanResult scanResult :resultList) {
-                apList.add((int)i + ". " + scanResult.SSID + ", RSSI: " + scanResult.level);
+                apList.add((int)(i+1) + ". " + scanResult.SSID + ", RSSI: " + scanResult.level);
                 barEntries.add(new BarEntry(i, scanResult.level));
                 i += 1f;
                 labelEntries.add(scanResult.SSID);

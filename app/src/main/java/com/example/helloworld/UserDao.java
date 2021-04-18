@@ -20,6 +20,6 @@ public interface UserDao {
     List<DataRoom> getAllRooms();
 
     @Query("Select * from table_wardrive")
-    List<DataWardrive> getWardriveData();
+    List<DataWardrive> getWarData();
 
 }

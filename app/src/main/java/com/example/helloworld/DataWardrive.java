@@ -23,13 +23,13 @@ public class DataWardrive {
         this.data_roomLabel = data_roomLabel;
     }
 
-    public int getId_wardrive() {
+    /*public int getId_wardrive() {
         return id_wardrive;
     }
 
     public void setId_wardrive(int id_wardrive) {
         this.id_wardrive = id_wardrive;
-    }
+    }*/
 
     public int getData_rssi() {
         return data_rssi;
