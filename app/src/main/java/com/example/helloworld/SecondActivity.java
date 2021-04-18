@@ -36,6 +36,7 @@ public class SecondActivity extends AppCompatActivity {
     List<ScanResult> resultList;
     WifiReceiver wifiReceiver;
 
+    boolean boolPredict =  false;
     boolean def = false;
     AppDatabase dbRoom;
     AppDatabase dbWar;
@@ -52,7 +53,7 @@ public class SecondActivity extends AppCompatActivity {
         EditText textRoom = (EditText) findViewById(R.id.textRoom);
         Button btnWar = findViewById(R.id.btnStartWar);
         Button btnPredict = findViewById(R.id.btnPredict);
-        Button btnUpdate = findViewById(R.id.btnGetWifi);
+        //Button btnUpdate = findViewById(R.id.btnGetWifi);
         Button btnWarCont = findViewById(R.id.btnStartWar2);
         TextView result1 = (TextView) findViewById(R.id.result1);
         TextView result2 = (TextView) findViewById(R.id.result2);
@@ -83,7 +84,7 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
 
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
+        /*btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 result1.setText("Processing");
@@ -92,143 +93,19 @@ public class SecondActivity extends AppCompatActivity {
                 //result1.setText("Scan Done. Wifi List Updated. Ready to Predict");
 
             }
-        });
+        });*/
 
         btnPredict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String TAG = "PredictButton";
-
+                boolPredict = true;
                 Log.d("PredictButton", "Before startscan");
+                result1.setText("Processing");
                 result2.setText("Processing");
                 wifiManager.startScan();
 
-
                 Toast.makeText(getApplicationContext(), "Started scanning and predicting", Toast.LENGTH_SHORT).show();
-
                 Log.d("PredictButton", "After startscan");
-
-                List<ScanResult> currentList = resultList;
-                Log.d("PredictButton", "AfterList");
-
-                List<DataRoom> listRoom = dbRoom.userDao().getAllRooms();
-                List<DataWardrive> listWar = dbWar.userDao().getWarData();
-                Log.d(TAG, "AfterDB: "+listRoom.size() + " " +listWar.size());
-
-                //Log.d(TAG, "listWar" + listWar.get(0) + "," + listWar.get(7));
-                Collections.sort(listWar, new Comparator<DataWardrive>() {
-                    @Override
-                    public int compare(DataWardrive dataWardrive, DataWardrive t1) {
-                        return dataWardrive.getData_roomLabel().compareTo(t1.getData_roomLabel());
-                    }
-                });
-                //Log.d(TAG, "listWar" + listWar.get(0) + "," + listWar.get(7));
-
-                //Log.d("PredictButton", "After First Sort");
-
-                //Log.d(TAG, "listRoom" + listRoom.get(0) + "," + listRoom.get(2));
-                Collections.sort(listRoom, new Comparator<DataRoom>() {
-                    @Override
-                    public int compare(DataRoom dataRoom, DataRoom t1) {
-                        return dataRoom.getRoomName().compareTo(t1.getRoomName());
-                    }
-                });
-                //Log.d(TAG, "listRoom" + listRoom.get(0) + "," + listRoom.get(2));
-
-                //Log.d("PredictButton", "AfterSecondSort");
-
-                List<ListData> temp = new ArrayList<>();
-                for (DataRoom dataRoom : listRoom) {
-                    float sum = 0;
-                    int repeat = 0;
-
-                    for (DataWardrive dataWardrive : listWar) {
-
-                        Log.d(TAG, "roomdta " + dataRoom.roomName + ", roomwar " + dataWardrive.data_roomLabel);
-                        if (dataRoom.roomName.equals(dataWardrive.data_roomLabel)) {
-                            Log.d(TAG, "roomwar " + dataWardrive.data_roomLabel);
-
-
-                            for (ScanResult scan : currentList) {
-                                //Log.d(TAG, "ssid"+ scan.SSID + dataWardrive.data_ssid);
-                                if ((scan.SSID.equals("knowledge-Fi 5gh") || scan.SSID.equals("Knowledge-Fi")) && scan.SSID.equals(dataWardrive.data_ssid)) {
-                                    sum += distance(Math.abs(scan.level), Math.abs(dataWardrive.data_rssi));
-                                    repeat++;
-                                    Log.d(TAG, "room " + dataWardrive.data_roomLabel + " level " + scan.level + " rssi " + dataWardrive.data_rssi + " sum " + sum);
-                                }
-                            }
-                        }
-                    }
-
-                    temp.add(new ListData(dataRoom.roomName, (sum/repeat)));
-                    Log.d(TAG, "sumFinal " + sum/repeat);
-
-                }
-
-                Log.d("PredictButton", "Before 3d sort" + temp.size());
-                Collections.sort(temp, new Comparator<ListData>() {
-                    @Override
-                    public int compare(ListData listData, ListData t1) {
-                        //Log.d("PredictButton", "Before Retutn");
-                        return Float.compare(listData.getValue(), t1.getValue());
-//                        Log.d("PredictButton", "After Return");
-                    }
-                });
-
-                Log.d("PredictButton", "After 3rd sort");
-                // Using k as 5 in knn
-                List<String> knnList = new ArrayList<>();
-                int i = 0;
-                for (ListData listData : temp) {
-                    if (i < 5) {
-                        knnList.add(listData.label);
-                        Log.d("PredictButton", listData.label+ ": " + listData.value);
-                        i++;
-                    }
-                    else {
-                        break;
-                    }
-                }
-
-                Log.d("PredictButton", "Before First Result");
-                if (temp.size() == 0) {
-                    Log.d("PredictionButton", "onClick: " + temp.size());
-                }
-
-                /*result1.setText("Current Location finding Simply: " + knnList.get(0) );
-                Log.d("PredictButton", "After First Result");
-                Log.d("PredictButton", knnList.get(0));*/
-
-                int[] array1  = new int[5];
-                int max = 0;
-                int index = 0;
-
-                for (String s1 : knnList) {
-                    max = 0;
-                    for (String s2 : knnList) {
-                        if (s1.equals(s2)) {
-                            max++;
-                        }
-                    }
-                    array1[index] = max;
-                    Log.d(TAG, "max: " + max);
-                    index++;
-                }
-
-                max = 0;
-                for (int j = 0; j < array1.length; j++) {
-                    if (array1[j] > array1[max]) {
-                        Log.d(TAG, "onClick: "+ j + array1[j]);
-                        max = j;
-                    }
-                }
-
-                Log.d("PredictButton", "before second result");
-                //+knnList.get(max)
-                //result1.setText("Processed");
-                result2.setText("Current location: " + knnList.get(max));
-                Log.d("PredictButton", "After second result");
-
             }
         });
     }
@@ -269,6 +146,131 @@ public class SecondActivity extends AppCompatActivity {
         }
     }
 
+    public void predict(){
+        TextView result2 = (TextView) findViewById(R.id.result2);
+        String TAG = "PredictButton";
+        List<ScanResult> currentList = resultList;
+        Log.d("PredictButton", "AfterList");
+
+        List<DataRoom> listRoom = dbRoom.userDao().getAllRooms();
+        List<DataWardrive> listWar = dbWar.userDao().getWarData();
+        Log.d(TAG, "AfterDB: "+listRoom.size() + " " +listWar.size());
+
+        //Log.d(TAG, "listWar" + listWar.get(0) + "," + listWar.get(7));
+        Collections.sort(listWar, new Comparator<DataWardrive>() {
+            @Override
+            public int compare(DataWardrive dataWardrive, DataWardrive t1) {
+                return dataWardrive.getData_roomLabel().compareTo(t1.getData_roomLabel());
+            }
+        });
+        //Log.d(TAG, "listWar" + listWar.get(0) + "," + listWar.get(7));
+
+        //Log.d("PredictButton", "After First Sort");
+
+        //Log.d(TAG, "listRoom" + listRoom.get(0) + "," + listRoom.get(2));
+        Collections.sort(listRoom, new Comparator<DataRoom>() {
+            @Override
+            public int compare(DataRoom dataRoom, DataRoom t1) {
+                return dataRoom.getRoomName().compareTo(t1.getRoomName());
+            }
+        });
+        //Log.d(TAG, "listRoom" + listRoom.get(0) + "," + listRoom.get(2));
+
+        //Log.d("PredictButton", "AfterSecondSort");
+
+        List<ListData> temp = new ArrayList<>();
+        for (DataRoom dataRoom : listRoom) {
+            float sum = 0;
+            int repeat = 0;
+
+            for (DataWardrive dataWardrive : listWar) {
+
+                Log.d(TAG, "roomdta " + dataRoom.roomName + ", roomwar " + dataWardrive.data_roomLabel);
+                if (dataRoom.roomName.equals(dataWardrive.data_roomLabel)) {
+                    Log.d(TAG, "roomwar " + dataWardrive.data_roomLabel);
+
+
+                    for (ScanResult scan : currentList) {
+                        //Log.d(TAG, "ssid"+ scan.SSID + dataWardrive.data_ssid);
+                        if ((scan.SSID.equals("knowledge-Fi 5gh") || scan.SSID.equals("Knowledge-Fi")) && scan.SSID.equals(dataWardrive.data_ssid)) {
+                            sum += distance(Math.abs(scan.level), Math.abs(dataWardrive.data_rssi));
+                            repeat++;
+                            Log.d(TAG, "room " + dataWardrive.data_roomLabel + " level " + scan.level + " rssi " + dataWardrive.data_rssi + " sum " + sum);
+                        }
+                    }
+                }
+            }
+
+            temp.add(new ListData(dataRoom.roomName, (sum/repeat)));
+            Log.d(TAG, "sumFinal " + sum/repeat);
+
+        }
+
+        Log.d("PredictButton", "Before 3d sort" + temp.size());
+        Collections.sort(temp, new Comparator<ListData>() {
+            @Override
+            public int compare(ListData listData, ListData t1) {
+                //Log.d("PredictButton", "Before Retutn");
+                return Float.compare(listData.getValue(), t1.getValue());
+//                        Log.d("PredictButton", "After Return");
+            }
+        });
+
+        Log.d("PredictButton", "After 3rd sort");
+        // Using k as 5 in knn
+        List<String> knnList = new ArrayList<>();
+        int i = 0;
+        for (ListData listData : temp) {
+            if (i < 5) {
+                knnList.add(listData.label);
+                Log.d("PredictButton", listData.label+ ": " + listData.value);
+                i++;
+            }
+            else {
+                break;
+            }
+        }
+
+        Log.d("PredictButton", "Before First Result");
+        if (temp.size() == 0) {
+            Log.d("PredictionButton", "onClick: " + temp.size());
+        }
+
+                /*result1.setText("Current Location finding Simply: " + knnList.get(0) );
+                Log.d("PredictButton", "After First Result");
+                Log.d("PredictButton", knnList.get(0));*/
+
+        int[] array1  = new int[5];
+        int max = 0;
+        int index = 0;
+
+        for (String s1 : knnList) {
+            max = 0;
+            for (String s2 : knnList) {
+                if (s1.equals(s2)) {
+                    max++;
+                }
+            }
+            array1[index] = max;
+            Log.d(TAG, "max: " + max);
+            index++;
+        }
+
+        max = 0;
+        for (int j = 0; j < array1.length; j++) {
+            if (array1[j] > array1[max]) {
+                Log.d(TAG, "onClick: "+ j + array1[j]);
+                max = j;
+            }
+        }
+
+        Log.d("PredictButton", "before second result");
+        //+knnList.get(max)
+        //result1.setText("Processed");
+        result2.setText("Current location: " + knnList.get(max));
+        Log.d("PredictButton", "After second result");
+    }
+
     public float distance(float x, float y) {
         float z = Math.abs(x - y);
         //Log.d("PredictButton", "Dist fun x" + x + "y" + y + "z" + z);
@@ -277,9 +279,14 @@ public class SecondActivity extends AppCompatActivity {
 
     public void trigger() {
         TextView result1 = (TextView) findViewById(R.id.result1);
-        result1.setText("Scan Done. Wifi List Updated. Ready to Predict");
+        //result1.setText("Scan Done. Wifi List Updated. Ready to Predict");
         if (def) {
             warDrive();
+        }
+        if (boolPredict) {
+            result1.setText("Scan Done. Wifi List Updated. Predicting");
+            predict();
+            boolPredict = false;
         }
     }
 
